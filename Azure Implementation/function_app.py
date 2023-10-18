@@ -1,5 +1,9 @@
 import azure.functions as func
 import logging
+from send_data import upload_to_blob_storage
+from scrape_ebay import scrape_ebay_and_store
+import os
+
 
 app = func.FunctionApp()
 
@@ -15,6 +19,11 @@ def scrape_ebay(req: func.HttpRequest) -> func.HttpResponse:
             pass
         else:
             name = req_body.get('name')
+
+    outfile = "jsonout.jsonl"
+    scrape_ebay_and_store()
+    upload_to_blob_storage(outfile, outfile)
+    os.remove(outfile)
 
     if name:
         return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
