@@ -6,6 +6,8 @@ name: Build and deploy Python project to Azure Function App - scrape-ebay-fns
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'scraper_azure_function/**'
 
