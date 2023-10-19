@@ -6,8 +6,8 @@ app = func.FunctionApp()
 
 @app.route(route="scrape_ebay_fns", auth_level=func.AuthLevel.ANONYMOUS)
 def scrape_ebay_fns(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
-
+    logging.info('Python HTTP trigger function processed a request. Sent raw scraped records to Blob Storage.')
+    
     scrape_ebay_and_store()
 
     return func.HttpResponse(
