@@ -2,10 +2,9 @@ from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import requests
 import json
-import jsonlines
-import tempfile  
-from os import listdir  
+from utils.send_data import upload_blob_stream 
 
+data = []
 def scrape_ebay_and_store():
 
     page=1
@@ -23,8 +22,8 @@ def scrape_ebay_and_store():
             #     break
             items = soup.find_all('li',attrs={'class':'s-item s-item__pl-on-bottom'})
 
-        data = []
-        print("Count :", len(items))
+        
+        # print("Count :", len(items))
         for item in items:
             item_data = {}
             try:
@@ -49,14 +48,10 @@ def scrape_ebay_and_store():
                 None
             item_data["page"] = page
             data.append(item_data)
-            # print("\n")
         
-        # final = json.dump(data)
-        # with open("jsonout.json", "a") as final:
-        #     json.dump(data, final)
-        # with jsonlines.open(fp, mode='a') as writer:
-        #     writer.write(data)
-
         page += 1
+
+    output = json.dumps(data)
+    upload_blob_stream(output, "output.json")
 
     return 
