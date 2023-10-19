@@ -8,10 +8,12 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'scraper_azure_function/**'
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './scraper_azure_function' # set this to the path to your web app project, defaults to the repository root
   PYTHON_VERSION: '3.10' # set this to the python version to use (supports 3.6, 3.7, 3.8)
 
 jobs:
@@ -20,6 +22,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: 'demand-forecast-ebay/scraper_azure_function'
+          sparse-checkout-cone-mode: false
 
       - name: Setup Python version
         uses: actions/setup-python@v1
