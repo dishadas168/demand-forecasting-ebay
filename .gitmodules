@@ -1,0 +1,3 @@
+[submodule "demand-forecasting-ebay-azureml"]
+	path = demand-forecasting-ebay-azureml
+	url = https://github.com/dishadas168/demand-forecasting-ebay-azureml.git
