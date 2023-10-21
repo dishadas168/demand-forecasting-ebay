@@ -1,3 +1,8 @@
 [submodule "demand-forecasting-ebay-azureml"]
 	path = demand-forecasting-ebay-azureml
 	url = https://github.com/dishadas168/demand-forecasting-ebay-azureml.git
+	branch = main
+[submodule "demand-forecasting-ebay-databricks"]
+	path = demand-forecasting-ebay-databricks
+	url = https://github.com/dishadas168/demand-forecasting-ebay-databricks.git
+	branch = main

@@ -8,11 +8,14 @@ python3 -m venv .venv
 (Download MS Python extension)
 (Choose python interpreter)
 
+(To start a function)
 func init
 pip install -r requirements.txt
 func new
 func start
 
+
+(To publish the function)
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 az login --use-device-code
 func azure functionapp publish scrape-ebay-fns
