@@ -2,6 +2,9 @@
 
 This project is a comprehensive demand forecasting pipeline designed to help businesses make data-driven decisions by predicting future demand for products. It leverages Azure services for the initial development and has plans for an AWS implementation as well. The pipeline is designed to be flexible, scalable, and easy to maintain.
 
+![Azure Architecture](./resources/azure_demand_forecasting_architecture.JPG)
+
+
 ## Project Flow
 
 The demand forecasting pipeline consists of several components that work seamlessly together:
@@ -12,6 +15,7 @@ The demand forecasting pipeline consists of several components that work seamles
 2. **Azure Functions**
    - Scrapes eBay for sold products across various categories, collecting item details and URLs.
    - Converts the scraped data into a JSON file.
+   - Comes with Github Actions CICD pipeline for deployment to Azure Functions webapp from local.
 
 3. **Azure Blob Storage**
    - The JSON file is stream-uploaded to Azure Blob Storage for temporary storage.
@@ -42,6 +46,8 @@ The demand forecasting pipeline consists of several components that work seamles
 ## Future Expansion (AWS)
 
 In the future, the project aims to expand to AWS by implementing a similar pipeline. The AWS implementation will include the following services:
+
+![AWS Architecture](./resources/aws_demand_forecasting_architecture.JPG)
 
 - **Amazon S3** for storage.
 - **AWS Lambda** for serverless execution.
