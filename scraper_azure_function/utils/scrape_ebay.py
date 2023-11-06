@@ -11,7 +11,7 @@ mongodb_uri="mongodb://ebay-storage-db:Z07RYTm2ZOMWBNeioffbKYDQ7Vgm4IfspqOX8SMk7
 
 client = pymongo.MongoClient(mongodb_uri)
 db = client["demand-froecasting-ebay"]
-raw_collection = db["trial"]
+raw_collection = db["raw"]
 
 def make_uid(*args):
   uid = ""
