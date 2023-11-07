@@ -16,9 +16,9 @@ def scrape_ebay_fns(req: func.HttpRequest) -> func.HttpResponse:
     country = body['country']
     tea_type = body['tea_type']
 
-    if scrape_date and country and tea_type: 
+    if country and tea_type: 
 
-        scrape_ebay_and_store(scrape_date, country, tea_type)
+        scrape_ebay_and_store(country, tea_type, scrape_date)
         return func.HttpResponse( 
             f"This HTTP-triggered function " 
             f"executed successfully for date {scrape_date}, country {country} and tea type {tea_type}") 

@@ -6,6 +6,8 @@ from datetime import datetime
 import hashlib
 from base64 import b64encode
 import pymongo
+import calendar
+from dateutil import tz
 
 mongodb_uri="mongodb://ebay-storage-db:Z07RYTm2ZOMWBNeioffbKYDQ7Vgm4IfspqOX8SMk7TT0vDgnOadG1GelNUaeRBAvCIL5CjOM7zm8ACDbZGMfpQ==@ebay-storage-db.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@ebay-storage-db@"
 
@@ -23,7 +25,24 @@ def make_uid(*args):
 def encode_hyphen(string):
     return string.replace("-", "%252D")
 
-def scrape_ebay_and_store(scrape_date, country, tea_type):
+def get_scrape_date(date_string):
+
+    from_zone = tz.gettz('UTC')
+    to_zone = tz.gettz('America/Chicago')
+    date_string = date_string.split(".")[0]
+    date_format = "%Y-%m-%dT%H:%M:%S"
+    dt_obj = datetime.strptime(date_string, date_format)
+    dt_obj = dt_obj.replace(tzinfo=from_zone)
+    dt_obj = dt_obj.astimezone(to_zone)
+    month = calendar.month_abbr[int(dt_obj.month)]
+
+    scrape_date = f"Sold  {month} {dt_obj.day}, {dt_obj.year}"
+    return scrape_date
+
+def scrape_ebay_and_store(country, tea_type, scrape_date):
+
+  if len(scrape_date) > 0:
+    scrape_date = get_scrape_date(scrape_date)
 
   page=1
   item_count = 0
@@ -51,9 +70,7 @@ def scrape_ebay_and_store(scrape_date, country, tea_type):
 
           try:
               item_data["date_sold"] = item.find('div', attrs={'class':'s-item__caption-section'}).find('span', attrs={'class':'POSITIVE'}).text
-              if item_data["date_sold"] != scrape_date:
-                  print(item_data["date_sold"])
-                  print(scrape_date)
+              if len(scrape_date) > 0 and item_data["date_sold"] != scrape_date:
                   continue
               item_data["title"] = item.find('span', attrs={'role':'heading'}).text
               item_data['subtitle'] = item.find('div', attrs={'class':'s-item__subtitle'}).find('span', attrs={'class':'SECONDARY_INFO'}).text
