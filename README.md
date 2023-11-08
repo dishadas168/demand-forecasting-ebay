@@ -11,36 +11,47 @@ The demand forecasting pipeline consists of several components that work seamles
 
 1. **Azure Data Factory (ADF) Pipeline**
    - Triggered daily at a specific time to initiate the entire data flow.
+   - Pipeline consists of an outer pipeline calling lookup and forEach function for each country. Inside the ForEach activity lies an inner pipeline that calls the Azure Function for each Tea Type.
+   
 
-2. **Azure Functions**
+   ![ADF](./resources/ADF_daily_load.png)
+   ![ADF](./resources/ADF_outerloop.png)
+   ![ADF](./resources/ADF_innerloop.png)
+
+3. **Azure Functions**
    - Scrapes eBay for sold products across various categories, collecting item details and URLs.
    - Converts the scraped data into a JSON file.
    - Comes with Github Actions CICD pipeline for deployment to Azure Functions webapp from local.
 
-3. **Azure Blob Storage**
+4. **Azure Blob Storage**
    - The JSON file is stream-uploaded to Azure Blob Storage for temporary storage.
 
-4. **Databricks Notebook (Transformation)**
+5. **Databricks Notebook (Transformation)**
    - Retrieves the data from Azure Blob Storage and performs various transformations, including:
      - Further data extraction by visiting the URL for each product.
      - Natural Language Processing (NLP) for text analysis.
      - Feature engineering for time series predictions.
 
-5. **Azure SQL Database**
+6. **Azure SQL Database**
    - Stores the structured data transformed by the Databricks notebook.
 
-6. **Databricks Notebook (Demand Forecasting)**
+7. **Databricks Notebook (Demand Forecasting)**
    - Retrieves data from Azure SQL Database and makes calls to an ML endpoint for demand forecasting.
    - The forecasted data is then stored back in Azure SQL.
+   - The model is trained using AutoML.
+    ![DB](./resources/forecast.png)  
 
-7. **Power BI Dashboard**
+8. **Power BI Dashboard**
    - Visualizes the demand forecasting data, providing users with valuable insights.
 
-8. **Weekly ADF Pipeline (Re-training)**
+    ![PBI](./resources/powerbi_example.png)  
+    ![PBI](./resources/powerbi_example_2.png)
+   
+10. **Weekly ADF Pipeline (Re-training)**
    - Triggered once a week to update the ML model.
    - Extracts data from Azure SQL and uses it to train a time-series model on Azure Machine Learning.
 
-9. **Azure Machine Learning (AML) Model Deployment**
+11. **Azure Machine Learning (AML) Model Deployment**
    - Deploys the trained model on Azure for real-time demand forecasting.
 
 ## Future Expansion (AWS)
